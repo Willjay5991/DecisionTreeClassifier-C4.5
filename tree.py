@@ -304,7 +304,7 @@ def run_decision_tree():
 
 
     dataset.attributes = dataset.rows.pop(0)
-    print dataset.attributes
+    print(dataset.attributes)
 
     # this is used to generalize the code for other datasets.
     # true indicates numeric data. false in nominal data
@@ -322,7 +322,7 @@ def run_decision_tree():
         else:
             dataset.class_col_index = range(len(dataset.attributes))[-1]
 
-    print "classifier is %d" % dataset.class_col_index
+    print("classifier is %d" % dataset.class_col_index)
     # preprocessing the dataset
     preprocessing(dataset)
 
@@ -342,14 +342,14 @@ def run_decision_tree():
     K=10
     # Stores accuracy of the 10 runs
     accuracy = []
-    start = time.clock()
+    start = time.perf_counter()
     for k in range(K):
-        print "Doing fold ", k
+        print("Doing fold ", k)
         training_set.rows = [x for i, x in enumerate(dataset.rows) if i % K != k]
         test_set.rows = [x for i, x in enumerate(dataset.rows) if i % K == k]
 
-        print "Number of training records: %d" % len(training_set.rows)
-        print "Number of test records: %d" % len(test_set.rows)
+        print("Number of training records: %d" % len(training_set.rows))
+        print("Number of test records: %d" % len(test_set.rows))
         root = compute_decision_tree(training_set, None, classifier)
 
         # Classify the test set using the tree we just constructed
@@ -360,7 +360,7 @@ def run_decision_tree():
 
         # Accuracy
         acc = float(results.count(True))/float(len(results))
-        print "accuracy: %.4f" % acc
+        print("accuracy: %.4f" % acc)
 
         # pruning code currently disabled
         # best_score = validate_tree(root, validate_set)
@@ -370,8 +370,8 @@ def run_decision_tree():
         del root
 
     mean_accuracy = math.fsum(accuracy)/10
-    print "Accuracy  %f " % (mean_accuracy)
-    print "Took %f secs" % (time.clock() - start)
+    print("Accuracy  %f " % (mean_accuracy))
+    print("Took %f secs" % (time.perf_counter() - start))
     # Writing results to a file (DO NOT CHANGE)
     f = open("result.txt", "w")
     f.write("accuracy: %.4f" % mean_accuracy)
