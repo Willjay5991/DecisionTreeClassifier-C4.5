@@ -84,12 +84,13 @@ def compute_decision_tree(dataset, parent_node, classifier):
             attr_value_list = [example[attr_index] for example in dataset.rows] # these are the values we can split on, now we must find the best one
             attr_value_list = list(set(attr_value_list)) # remove duplicates from list of all attribute values
 
+            # 属性的取值过多时，先按照重复次数排序，使用10为间隔挑选属性值
             if(len(attr_value_list) > 100):
                 attr_value_list = sorted(attr_value_list)
                 total = len(attr_value_list)
                 ten_percentile = int(total/10)
                 new_list = []
-                for x in range(1, 10):
+                for x in range(1, 10): 
                     new_list.append(attr_value_list[x*ten_percentile])
                 attr_value_list = new_list
 
@@ -166,7 +167,7 @@ def calculate_entropy(dataset, classifier):
     ones = count_positives(dataset.rows, dataset.attributes, classifier)
 
     #get the count of all the rows in the dataset.
-    total_rows = len(dataset.rows);
+    total_rows = len(dataset.rows)
     #from the above two we can get the count of rows with classification 0 too
 
     #Entropy formula is sum of p*log2(p). Referred the slides. P is the probability
@@ -192,7 +193,7 @@ def calculate_information_gain(attr_index, dataset, val, entropy):
 
     classifier = dataset.attributes[attr_index]
     attr_entropy = 0
-    total_rows = len(dataset.rows);
+    total_rows = len(dataset.rows)
     gain_upper_dataset = csvdata(classifier)
     gain_lower_dataset = csvdata(classifier)
     gain_upper_dataset.attributes = dataset.attributes
@@ -270,7 +271,7 @@ def prune_tree(root, node, validate_set, best_score):
         else:
             new_score = 0
 
-        if (new_score >= best_score):
+        if (new_score >= best_score): # 剪枝后更好，就保留剪枝，否则回复剪枝前
             return new_score
         else:
             node.parent.is_leaf_node = False
